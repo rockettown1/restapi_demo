@@ -1,6 +1,5 @@
 require("./db/connection");
 const express = require("express");
-const { Post } = require("./models/Post");
 const { userRouter } = require("./routes/users");
 const { postRouter } = require("./routes/posts");
 

@@ -24,7 +24,8 @@ exports.addPost = async (req, res) => {
     // const post = new Post(req.body);
     // const user = await User.findById(req.params.user_id);
     // user.posts.push(post);
-    // const returnedValue = await user.save();
+    // const returnedValue = await user.save()
+    console.log(req.body);
     const post = new Post(req.body);
     post.author = req.params.user_id;
     const returnedValue = await post.save();

@@ -12,11 +12,16 @@ exports.getAllUsers = async (req, res) => {
 exports.addUser = async (req, res) => {
   try {
     const user = new User(req.body);
+    const token = user.generateAuthToken();
     const savedUser = await user.save();
-    console.log(req.body);
-    res.status(201).send(savedUser);
+
+    res.status(201).send({ savedUser, token });
   } catch (error) {
-    res.status(500).send({ message: "Could not connect" });
+    if (error.code === 11000) {
+      res.status(400).send({ message: "User already exists" });
+    } else {
+      res.status(500).send({ message: "Could not connect" });
+    }
   }
 };
 
@@ -42,7 +47,8 @@ exports.deleteUser = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = User.findByCredentials(req.body.email, req.body.password);
-    res.status(200).send(user);
+    const token = user.generateAuthToken();
+    res.status(200).send({ user, token });
   } catch (error) {
     res.status(400).send({ message: "Unable to Login" });
   }

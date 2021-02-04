@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tokens: [
+      {
+        token: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -32,6 +39,12 @@ userSchema.statics.findByCredentials = async (email, password) => {
   }
 
   return user;
+};
+
+userSchema.methods.generateAuthToken = async function () {
+  const token = jwt.sign({ _id: this._id }, process.env.SECRET, { expiresIn: "1 week" });
+  this.tokens.push({ token });
+  return token;
 };
 
 const User = mongoose.model("User", userSchema);

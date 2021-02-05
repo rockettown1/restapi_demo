@@ -1,13 +1,19 @@
 const { Router } = require("express");
-const { getAllUsers, addUser, updateUserById, deleteUser, login } = require("../controllers/users");
-const { hashPassword } = require("../middleware/");
+const { getMyProfile, addUser, updateUserById, deleteUser, login, logout } = require("../controllers/users");
+const { hashPassword, auth } = require("../middleware/");
 const userRouter = Router();
 
-userRouter.get("/users", getAllUsers);
+//TEST
+//add a user
+//copy the token
+// get your profile (remember to include the token in the header)
+
+userRouter.get("/users/myprofile", auth, getMyProfile);
 userRouter.post("/users", hashPassword, addUser);
-userRouter.patch("/users/:id", hashPassword, updateUserById);
-userRouter.delete("/users/:id", deleteUser);
+userRouter.patch("/users/:id", auth, hashPassword, updateUserById);
+userRouter.delete("/users/:id", auth, deleteUser);
 userRouter.post("/users/login", login);
+userRouter.get("/users/logout", auth, logout);
 
 //tidier way
 // userRouter.route("/users").get(getAllUsers).post(addUser);

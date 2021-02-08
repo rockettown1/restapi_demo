@@ -18,7 +18,6 @@ exports.addUser = async (req, res) => {
     const user = new User(req.body);
     const token = await user.generateAuthToken();
     const savedUser = await user.save();
-
     res.status(201).send({ savedUser, token });
   } catch (error) {
     if (error.code === 11000) {
@@ -53,7 +52,8 @@ exports.deleteUser = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password);
-    const token = user.generateAuthToken();
+    const token = await user.generateAuthToken();
+
     res.status(200).send({ user, token });
   } catch (error) {
     res.status(400).send({ message: "Unable to Login" });

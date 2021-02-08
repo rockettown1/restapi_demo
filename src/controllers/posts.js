@@ -12,7 +12,7 @@ exports.getAllPosts = async (req, res) => {
 
 exports.getPostsByUser = async (req, res) => {
   try {
-    const allPosts = await Post.find({ author: req.params.user_id });
+    const allPosts = await Post.find({ author: req.user._id });
     res.status(200).send(allPosts);
   } catch (error) {
     res.status(404).send({ message: "user not found" });
@@ -27,7 +27,7 @@ exports.addPost = async (req, res) => {
     // const returnedValue = await user.save()
     console.log(req.body);
     const post = new Post(req.body);
-    post.author = req.params.user_id;
+    post.author = req.user._id;
     const returnedValue = await post.save();
 
     res.status(201).send(returnedValue);

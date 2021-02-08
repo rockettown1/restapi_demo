@@ -10,8 +10,8 @@ const userRouter = Router();
 
 userRouter.get("/users/myprofile", auth, getMyProfile);
 userRouter.post("/users", hashPassword, addUser);
-userRouter.patch("/users/:id", auth, hashPassword, updateUserById);
-userRouter.delete("/users/:id", auth, deleteUser);
+userRouter.patch("/users/myprofile", auth, hashPassword, updateUserById);
+userRouter.delete("/users/myprofile", auth, deleteUser);
 userRouter.post("/users/login", login);
 userRouter.get("/users/logout", auth, logout);
 

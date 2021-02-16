@@ -41,6 +41,15 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  delete userObject.tokens;
+  return userObject;
+};
+
 userSchema.methods.generateAuthToken = async function () {
   const token = jwt.sign({ _id: this._id }, process.env.SECRET, { expiresIn: "1 week" });
   this.tokens.push({ token });
